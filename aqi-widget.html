@@ -31,30 +31,46 @@
             transition: all 0.5s ease;
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .school-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 2px;
-        }
-        
-        .location {
-            font-size: 10px;
-            color: #666;
-        }
-        
         .content {
             display: grid;
-            grid-template-columns: 90px 1fr 180px;
-            gap: 20px;
+            grid-template-columns: 100px 100px 1fr 160px;
+            gap: 25px;
             align-items: center;
+            height: 90px;
         }
         
+        /* Date Section */
+        .date-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .date-month {
+            font-size: 16px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .date-day {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1a1a1a;
+            line-height: 1;
+            margin: 4px 0;
+        }
+        
+        .date-year {
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+        }
+        
+        /* AQI Circle */
         .aqi-circle {
             width: 90px;
             height: 90px;
@@ -68,7 +84,7 @@
         }
         
         .aqi-value {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 800;
             color: white;
             line-height: 1;
@@ -76,25 +92,19 @@
         }
         
         .aqi-label {
-            font-size: 10px;
+            font-size: 11px;
             color: rgba(255,255,255,0.95);
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
         }
         
-        .station-name {
-            font-size: 7px;
-            color: rgba(255,255,255,0.85);
-            margin-top: 2px;
-            text-align: center;
-        }
-        
+        /* Status Card */
         .status-card {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 10px;
-            padding: 12px 15px;
-            border-left: 3px solid transparent;
+            padding: 15px 20px;
+            border-left: 4px solid transparent;
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
@@ -102,56 +112,48 @@
             justify-content: center;
         }
         
-        .status-icon {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 4px;
-        }
-        
         .message-title {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: #1a1a1a;
-            text-align: center;
             line-height: 1.2;
         }
         
         .message-en {
-            font-size: 10px;
+            font-size: 11px;
             color: #2c3e50;
-            margin-bottom: 3px;
-            line-height: 1.3;
-            text-align: center;
+            margin-bottom: 4px;
+            line-height: 1.4;
         }
         
         .message-vi {
-            font-size: 9px;
+            font-size: 10px;
             color: #546e7a;
-            line-height: 1.3;
+            line-height: 1.4;
             font-style: italic;
-            text-align: center;
         }
         
+        /* Legend */
         .legend {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
             justify-content: center;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 9px;
             color: #555;
         }
         
         .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
             flex-shrink: 0;
         }
         
@@ -190,7 +192,13 @@
             
             .content {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 15px;
+                height: auto;
+            }
+            
+            .date-section {
+                flex-direction: row;
+                gap: 10px;
             }
             
             .aqi-circle {
@@ -201,7 +209,7 @@
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 8px;
+                gap: 10px;
             }
         }
     </style>
@@ -213,8 +221,6 @@
 
     <script>
         // Configuration - Van Phu, Ha Dong, Hanoi
-        const LAT = 20.9766;
-        const LON = 105.7649;
         const SCHOOL_NAME = "British Columbia Academy";
         
         // AQI levels and messages
@@ -222,7 +228,6 @@
             {
                 max: 100,
                 level: 'good',
-                icon: '😊',
                 titleEn: 'Good Air Quality',
                 titleVi: 'Chất Lượng Không Khí Tốt',
                 messageEn: 'Students can go outside anytime without masks.',
@@ -231,7 +236,6 @@
             {
                 max: 150,
                 level: 'moderate',
-                icon: '😷',
                 titleEn: 'Moderate - Masks Recommended',
                 titleVi: 'Trung Bình - Nên Đeo Khẩu Trang',
                 messageEn: 'Students can go outside for play. Wearing masks is recommended.',
@@ -240,7 +244,6 @@
             {
                 max: 200,
                 level: 'unhealthy',
-                icon: '😨',
                 titleEn: 'Unhealthy - Masks Required',
                 titleVi: 'Không Lành Mạnh - Bắt Buộc Đeo Khẩu Trang',
                 messageEn: 'Students must wear masks when going outside for play.',
@@ -249,7 +252,6 @@
             {
                 max: 999,
                 level: 'hazardous',
-                icon: '🚫',
                 titleEn: 'Hazardous - Stay Indoors',
                 titleVi: 'Nguy Hiểm - Ở Trong Nhà',
                 messageEn: 'Students must stay indoors. No outdoor activities allowed.',
@@ -261,13 +263,12 @@
             return AQI_LEVELS.find(level => aqi <= level.max);
         }
 
-        function formatTime(date) {
-            return date.toLocaleString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+        function formatDate() {
+            const now = new Date();
+            const month = now.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+            const day = now.getDate();
+            const year = now.getFullYear();
+            return { month, day, year };
         }
 
         async function fetchAQI() {
@@ -301,22 +302,22 @@
 
         function renderWidget(aqiData) {
             const level = getAQILevel(aqiData.aqi);
+            const date = formatDate();
             
             const html = `
-                <div class="header">
-                    <div class="school-name">${SCHOOL_NAME}</div>
-                    <div class="location">📍 Van Phu, Ha Dong, Hanoi</div>
-                </div>
-                
                 <div class="content">
+                    <div class="date-section">
+                        <div class="date-month">${date.month}</div>
+                        <div class="date-day">${date.day}</div>
+                        <div class="date-year">${date.year}</div>
+                    </div>
+                    
                     <div class="aqi-circle ${level.level}">
                         <div class="aqi-value">${aqiData.aqi}</div>
                         <div class="aqi-label">AQI</div>
-                        <div class="station-name">${aqiData.station}</div>
                     </div>
                     
                     <div class="status-card ${level.level}-border">
-                        <div class="status-icon">${level.icon}</div>
                         <div class="message-title">${level.titleEn}</div>
                         <div class="message-en">${level.messageEn}</div>
                         <div class="message-vi">${level.messageVi}</div>

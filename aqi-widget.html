@@ -224,9 +224,9 @@
     </div>
 
     <script>
-        // Configuration
-        const LAT = 20.9601851;
-        const LON = 105.7663696;
+        // Configuration - Van Phu, Ha Dong, Hanoi
+        const LAT = 20.9766;
+        const LON = 105.7649;
         const SCHOOL_NAME = "British Columbia Academy";
         
         // AQI levels and messages
@@ -285,8 +285,9 @@
         async function fetchAQI() {
             try {
                 // Using WAQI API (World Air Quality Index) - free API
+                // Using Hanoi city name instead of coordinates for better accuracy
                 const response = await fetch(
-                    `https://api.waqi.info/feed/geo:${LAT};${LON}/?token=demo`
+                    `https://api.waqi.info/feed/hanoi/?token=demo`
                 );
                 
                 if (!response.ok) {
@@ -316,7 +317,7 @@
             const html = `
                 <div class="header">
                     <div class="school-name">${SCHOOL_NAME}</div>
-                    <div class="location">📍 Hanoi, Vietnam</div>
+                    <div class="location">📍 Van Phu, Ha Dong, Hanoi</div>
                 </div>
                 
                 <div class="content">

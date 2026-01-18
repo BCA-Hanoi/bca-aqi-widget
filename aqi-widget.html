@@ -18,7 +18,7 @@
         }
         
         .widget {
-            width: 400px;
+            width: 600px;
             height: 225px;
             border-radius: 12px;
             overflow: hidden;
@@ -46,9 +46,29 @@
         
         .content-wrapper {
             display: grid;
-            grid-template-columns: 140px 1fr;
+            grid-template-columns: 180px 1fr;
             flex: 1;
             position: relative;
+        }
+        
+        .quote-section {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            padding: 10px 16px;
+            z-index: 5;
+        }
+        
+        .quote-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            line-height: 1.4;
+            font-style: italic;
+            letter-spacing: 0.3px;
         }
         
         .refresh-btn {
@@ -89,7 +109,7 @@
         
         .date-section {
             background: white;
-            padding: 10px;
+            padding: 12px 15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -97,17 +117,17 @@
         }
         
         .date-weekday {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #999;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         
-        .date-day { font-size: 46px; font-weight: 900; line-height: 1; color: #1a1a1a; }
-        .date-info { font-size: 13px; font-weight: 700; margin-top: 3px; text-transform: uppercase; letter-spacing: 1.5px; color: #666; }
-        .date-year { font-size: 10px; font-weight: 600; margin-top: 2px; color: #999; }
+        .date-day { font-size: 52px; font-weight: 900; line-height: 1; color: #1a1a1a; }
+        .date-info { font-size: 15px; font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 1.5px; color: #666; }
+        .date-year { font-size: 11px; font-weight: 600; margin-top: 3px; color: #999; }
         
         .weather-info {
             margin-top: 8px;
@@ -131,10 +151,10 @@
         }
         
         .aqi-section {
-            padding: 12px 18px;
+            padding: 15px 25px 40px 25px;
             display: grid;
-            grid-template-columns: 85px 1fr;
-            gap: 12px;
+            grid-template-columns: 100px 1fr;
+            gap: 20px;
             align-items: center;
             color: white;
             transition: background 0.5s ease;
@@ -143,11 +163,11 @@
         .aqi-left {
             text-align: center;
             border-right: 2px solid rgba(255, 255, 255, 0.3);
-            padding-right: 8px;
+            padding-right: 15px;
         }
         
         .aqi-value {
-            font-size: 52px;
+            font-size: 60px;
             font-weight: 900;
             line-height: 1;
             text-shadow: 0 3px 10px rgba(0,0,0,0.3);
@@ -155,18 +175,18 @@
         }
         
         .aqi-label {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.9;
         }
         
-        .aqi-right { display: flex; flex-direction: column; gap: 6px; }
-        .emoji-line { display: flex; align-items: center; gap: 6px; }
-        .emoji { font-size: 26px; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2)); flex-shrink: 0; }
-        .status-title { font-size: 12px; font-weight: 800; line-height: 1.3; }
-        .status-title-vi { font-size: 10px; font-weight: 600; opacity: 0.9; line-height: 1.3; padding-left: 2px; }
+        .aqi-right { display: flex; flex-direction: column; gap: 8px; }
+        .emoji-line { display: flex; align-items: center; gap: 10px; }
+        .emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2)); flex-shrink: 0; }
+        .status-title { font-size: 16px; font-weight: 800; line-height: 1.3; }
+        .status-title-vi { font-size: 13px; font-weight: 600; opacity: 0.9; line-height: 1.3; padding-left: 2px; }
         .loading { color: white; text-align: center; font-size: 12px; padding: 20px; }
         
         .good { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
@@ -200,10 +220,42 @@
             <button class="refresh-btn" id="refreshBtn" title="Refresh data">🔄</button>
             <div class="update-time" id="updateTime">Loading...</div>
         </div>
+        
+        <div class="quote-section">
+            <div class="quote-text" id="quote">"Every child is a different kind of flower, and all together make this world a beautiful garden."</div>
+        </div>
     </div>
 
     <script>
         const API_KEY = '621c3c6e-26c6-4b4c-af1d-a1727708e16e';
+        
+        const DAILY_QUOTES = [
+            "Every child is a different kind of flower, and all together make this world a beautiful garden.",
+            "Teaching kids to count is fine, but teaching them what counts is best.",
+            "Children are not things to be molded, but people to be unfolded.",
+            "Play is the highest form of research. - Albert Einstein",
+            "It takes a big heart to shape little minds.",
+            "The best teachers teach from the heart, not from the book.",
+            "In a world where you can be anything, be kind.",
+            "Small moments, big memories - that's what teaching is all about.",
+            "Every child deserves a champion who will never give up on them.",
+            "The future of the world is in our classroom today.",
+            "A child's mind is like a sponge - make sure they soak up the good stuff!",
+            "Teaching is not about filling a bucket, but lighting a fire.",
+            "Your smile is a child's sunshine.",
+            "Children spell love: T-I-M-E.",
+            "The art of teaching is the art of assisting discovery."
+        ];
+        
+        function getDailyQuote() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            return DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
+        }
+        
+        function updateQuote() {
+            document.getElementById('quote').textContent = `"${getDailyQuote()}"`;
+        }
         
         const AQI_LEVELS = [
             { max: 50, level: 'good', emoji: '😊', titleEn: 'Good Air Quality', titleVi: 'Không Khí Tốt' },
@@ -359,6 +411,7 @@
 
         document.getElementById('refreshBtn').addEventListener('click', refresh);
         updateDateTime();
+        updateQuote();
         refresh();
         setInterval(refresh, 30 * 60 * 1000);
     </script>

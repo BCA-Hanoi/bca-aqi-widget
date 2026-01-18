@@ -9,338 +9,263 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: transparent;
+            background: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 0;
+            padding: 20px;
         }
         
         .widget {
             width: 600px;
-            height: 225px;
-            border-radius: 12px;
+            height: 180px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
             display: flex;
             flex-direction: column;
             position: relative;
+            background: white;
         }
         
         .title-bar {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            padding: 8px 12px;
-            position: relative;
-            z-index: 15;
+            background: #3498db;
+            padding: 10px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .title-section {
+            text-align: center;
+            padding: 0 12px;
         }
         
         .title-text {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             color: white;
-            text-align: center;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
         
         .content-wrapper {
             display: grid;
-            grid-template-columns: 180px 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             flex: 1;
             position: relative;
         }
         
-        .quote-section {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-            padding: 10px 16px;
-            z-index: 5;
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            background: white;
+            transition: background 0.3s ease;
         }
         
-        .quote-text {
-            font-size: 11px;
-            font-weight: 600;
+        .column.aqi-column {
             color: white;
-            text-align: center;
-            line-height: 1.4;
-            font-style: italic;
-            letter-spacing: 0.3px;
+        }
+        
+        .column.aqi-column.aqi-good-bg {
+            background: #27ae60;
+        }
+        
+        .column.aqi-column.aqi-moderate-bg {
+            background: #f39c12;
+        }
+        
+        .column.aqi-column.aqi-unhealthy-bg {
+            background: #e74c3c;
+        }
+        
+        .column.aqi-column.aqi-hazardous-bg {
+            background: #9b59b6;
+        }
+        
+        .weather-value-row, .aqi-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .weather-emoji, .aqi-emoji {
+            font-size: 32px;
+            line-height: 1;
+        }
+        
+        .main-value {
+            font-size: 46px;
+            font-weight: 600;
+            line-height: 1;
+            color: #2c3e50;
+            letter-spacing: -1px;
+        }
+        
+        .aqi-column .main-value {
+            color: white;
+        }
+        
+        .sub-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 3px;
+        }
+        
+        .aqi-column .sub-value {
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .detail {
+            font-size: 10px;
+            color: #95a5a6;
+            font-weight: 500;
+        }
+        
+        .date-weekday {
+            font-size: 11px;
+            font-weight: 700;
+            color: #3498db;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .aqi-column .detail {
+            color: white;
+            opacity: 0.95;
+            font-size: 12px;
+            font-weight: 600;
         }
         
         .refresh-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 28px;
-            height: 28px;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.3);
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
             z-index: 10;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
         }
         
-        .refresh-btn:hover { background: rgba(255, 255, 255, 0.35); transform: scale(1.1); }
+        .refresh-btn:hover { 
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
         .refresh-btn.spinning { animation: spin 0.6s linear; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .update-time {
-            position: absolute;
-            bottom: 6px;
-            right: 10px;
+        .update-bar {
+            background: #f8f9fa;
+            padding: 5px 12px;
+            text-align: center;
+        }
+        
+        .update-info {
             font-size: 8px;
-            color: rgba(255, 255, 255, 0.7);
+            color: #95a5a6;
             font-weight: 500;
-            z-index: 10;
-            max-width: 240px;
-            text-align: right;
-            line-height: 1.3;
         }
         
-        .date-section {
-            background: white;
-            padding: 12px 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .date-weekday {
-            font-size: 10px;
+        .station-name {
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #999;
-            margin-bottom: 4px;
+            color: #3498db;
         }
-        
-        .date-day { font-size: 52px; font-weight: 900; line-height: 1; color: #1a1a1a; }
-        .date-info { font-size: 15px; font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 1.5px; color: #666; }
-        .date-year { font-size: 11px; font-weight: 600; margin-top: 3px; color: #999; }
-        
-        .weather-info {
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid #f0f0f0;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .weather-temp {
-            font-size: 15px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 2px;
-        }
-        
-        .weather-details {
-            font-size: 8px;
-            color: #999;
-            text-transform: capitalize;
-        }
-        
-        .aqi-section {
-            padding: 15px 25px 40px 25px;
-            display: grid;
-            grid-template-columns: 100px 1fr;
-            gap: 20px;
-            align-items: center;
-            color: white;
-            transition: background 0.5s ease;
-        }
-        
-        .aqi-left {
-            text-align: center;
-            border-right: 2px solid rgba(255, 255, 255, 0.3);
-            padding-right: 15px;
-        }
-        
-        .aqi-value {
-            font-size: 60px;
-            font-weight: 900;
-            line-height: 1;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            margin-bottom: 4px;
-        }
-        
-        .aqi-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.9;
-        }
-        
-        .aqi-right { display: flex; flex-direction: column; gap: 8px; }
-        .emoji-line { display: flex; align-items: center; gap: 10px; }
-        .emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2)); flex-shrink: 0; }
-        .status-title { font-size: 16px; font-weight: 800; line-height: 1.3; }
-        .status-title-vi { font-size: 13px; font-weight: 600; opacity: 0.9; line-height: 1.3; padding-left: 2px; }
-        .loading { color: white; text-align: center; font-size: 12px; padding: 20px; }
-        
-        .good { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-        .moderate { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .unhealthy { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-        .hazardous { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
     </style>
 </head>
 <body>
     <div class="widget">
         <div class="title-bar">
-            <div class="title-text">BCA Today</div>
+            <div class="title-section">
+                <div class="title-text">Date</div>
+            </div>
+            <div class="title-section">
+                <div class="title-text">Weather</div>
+            </div>
+            <div class="title-section">
+                <div class="title-text">Air</div>
+            </div>
         </div>
         
         <div class="content-wrapper">
-            <div class="date-section">
-                <div class="date-weekday" id="weekday">LOADING</div>
-                <div class="date-day" id="day">--</div>
-                <div class="date-info" id="month">---</div>
-                <div class="date-year" id="year">----</div>
-                <div class="weather-info" id="weather">
-                    <div class="weather-temp">--°C</div>
-                    <div class="weather-details">Loading...</div>
+            <!-- Date Column -->
+            <div class="column">
+                <div class="main-value" id="day">18</div>
+                <div class="sub-value" id="month-year">Jan 2026</div>
+                <div class="date-weekday" id="weekday">Saturday</div>
+            </div>
+            
+            <!-- Weather Column -->
+            <div class="column">
+                <div class="weather-value-row">
+                    <div class="main-value" id="temp">22°</div>
+                    <div class="weather-emoji" id="weather-icon">☀️</div>
                 </div>
+                <div class="sub-value">Hanoi</div>
+                <div class="detail" id="humidity">73% humidity</div>
             </div>
             
-            <div class="aqi-section" id="aqiSection">
-                <div class="loading">Loading AQI data...</div>
+            <!-- Air Quality Column -->
+            <div class="column aqi-column aqi-unhealthy-bg" id="aqi-column">
+                <div class="aqi-value-row">
+                    <div class="main-value" id="aqi">185</div>
+                    <div class="aqi-emoji" id="aqi-emoji">😷</div>
+                </div>
+                <div class="sub-value" id="aqi-status">Unhealthy</div>
+                <div class="detail" id="aqi-action">Mask Required</div>
             </div>
             
-            <button class="refresh-btn" id="refreshBtn" title="Refresh data">🔄</button>
-            <div class="update-time" id="updateTime">Loading...</div>
+            <button class="refresh-btn" id="refreshBtn">🔄</button>
         </div>
         
-        <div class="quote-section">
-            <div class="quote-text" id="quote">"Every child is a different kind of flower, and all together make this world a beautiful garden."</div>
+        <div class="update-bar">
+            <div class="update-info">
+                <span id="updateTime">Loading...</span> • <span class="station-name" id="stationName">--</span>, Ha Dong
+            </div>
         </div>
     </div>
 
     <script>
         const API_KEY = '621c3c6e-26c6-4b4c-af1d-a1727708e16e';
         
-        const DAILY_QUOTES = [
-            "Every child is a different kind of flower, and all together make this world a beautiful garden.",
-            "Teaching kids to count is fine, but teaching them what counts is best.",
-            "Children are not things to be molded, but people to be unfolded.",
-            "Play is the highest form of research. - Albert Einstein",
-            "It takes a big heart to shape little minds.",
-            "The best teachers teach from the heart, not from the book.",
-            "In a world where you can be anything, be kind.",
-            "Small moments, big memories - that's what teaching is all about.",
-            "Every child deserves a champion who will never give up on them.",
-            "The future of the world is in our classroom today.",
-            "A child's mind is like a sponge - make sure they soak up the good stuff!",
-            "Teaching is not about filling a bucket, but lighting a fire.",
-            "Your smile is a child's sunshine.",
-            "Children spell love: T-I-M-E.",
-            "The art of teaching is the art of assisting discovery."
-        ];
-        
-        function getDailyQuote() {
-            const today = new Date();
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            return DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
-        }
-        
-        function updateQuote() {
-            document.getElementById('quote').textContent = `"${getDailyQuote()}"`;
-        }
-        
         const AQI_LEVELS = [
-            { max: 50, level: 'good', emoji: '😊', titleEn: 'Good Air Quality', titleVi: 'Không Khí Tốt' },
-            { max: 100, level: 'good', emoji: '😊', titleEn: 'Good Air Quality', titleVi: 'Không Khí Tốt' },
-            { max: 150, level: 'moderate', emoji: '😷', titleEn: 'Moderate<br>Masks Recommended', titleVi: 'Trung Bình<br>Nên Đeo Khẩu Trang' },
-            { max: 200, level: 'unhealthy', emoji: '😷', titleEn: 'Unhealthy<br>Masks Required', titleVi: 'Không Lành Mạnh<br>Bắt Buộc Khẩu Trang' },
-            { max: 999, level: 'hazardous', emoji: '🚫', titleEn: 'Hazardous<br>Stay Indoors', titleVi: 'Nguy Hiểm<br>Ở Trong Nhà' }
+            { max: 50, bgClass: 'aqi-good-bg', emoji: '😊', status: 'Good', action: 'Go Outside!' },
+            { max: 100, bgClass: 'aqi-good-bg', emoji: '🙂', status: 'Good', action: 'Enjoy Fresh Air' },
+            { max: 150, bgClass: 'aqi-moderate-bg', emoji: '😐', status: 'Moderate', action: 'Suggested Mask' },
+            { max: 200, bgClass: 'aqi-unhealthy-bg', emoji: '😷', status: 'Unhealthy', action: 'Mask Required' },
+            { max: 999, bgClass: 'aqi-hazardous-bg', emoji: '🚫', status: 'Hazardous', action: 'Stay Inside' }
         ];
-
+        
         function getAQILevel(aqi) {
             return AQI_LEVELS.find(level => aqi <= level.max);
         }
 
         function updateDateTime() {
             const now = new Date();
-            const weekdays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             
-            document.getElementById('weekday').textContent = weekdays[now.getDay()];
             document.getElementById('day').textContent = now.getDate();
-            document.getElementById('month').textContent = months[now.getMonth()];
-            document.getElementById('year').textContent = now.getFullYear();
+            document.getElementById('month-year').textContent = `${months[now.getMonth()]} ${now.getFullYear()}`;
+            document.getElementById('weekday').textContent = weekdays[now.getDay()];
             
             return now;
-        }
-
-        async function fetchLaCasta() {
-            console.log('🔍 Trying La Casta...');
-            const response = await fetch(
-                `https://api.airvisual.com/v2/nearest_city?lat=20.9766&lon=105.7649&key=${API_KEY}`
-            );
-            
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-            if (data.status !== 'success') throw new Error('API error');
-            
-            console.log('✓ La Casta:', data.data.city);
-            
-            return {
-                aqi: data.data.current.pollution.aqius,
-                station: data.data.city,
-                city: data.data.city,
-                state: data.data.state,
-                weather: {
-                    temp: data.data.current.weather.tp,
-                    humidity: data.data.current.weather.hu,
-                    icon: data.data.current.weather.ic
-                },
-                timestamp: new Date()
-            };
-        }
-
-        async function fetchISPH() {
-            console.log('🔄 Trying ISPH...');
-            const response = await fetch(
-                `https://api.airvisual.com/v2/city?city=Ha Dong&state=Hanoi&country=Vietnam&key=${API_KEY}`
-            );
-            
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-            if (data.status !== 'success') throw new Error('API error');
-            
-            console.log('✓ ISPH (fallback)');
-            
-            return {
-                aqi: data.data.current.pollution.aqius,
-                station: 'ISPH',
-                city: data.data.city,
-                state: data.data.state,
-                weather: {
-                    temp: data.data.current.weather.tp,
-                    humidity: data.data.current.weather.hu,
-                    icon: data.data.current.weather.ic
-                },
-                timestamp: new Date()
-            };
-        }
-
-        async function fetchAQI() {
-            try {
-                return await fetchLaCasta();
-            } catch (error) {
-                console.warn('⚠ La Casta failed:', error.message);
-                return await fetchISPH();
-            }
         }
 
         function getWeatherIcon(iconCode) {
@@ -358,39 +283,78 @@
             return icons[iconCode] || '🌤️';
         }
 
-        function updateWeather(weather) {
-            const weatherIcon = getWeatherIcon(weather.icon);
-            document.getElementById('weather').innerHTML = `
-                <div class="weather-temp">${Math.round(weather.temp)}°C ${weatherIcon}</div>
-                <div class="weather-details">Humidity ${weather.humidity}%</div>
-            `;
+        async function fetchLaCasta() {
+            const response = await fetch(
+                `https://api.airvisual.com/v2/nearest_city?lat=20.9766&lon=105.7649&key=${API_KEY}`
+            );
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            if (data.status !== 'success') throw new Error('API error');
+            
+            return {
+                aqi: data.data.current.pollution.aqius,
+                station: data.data.city,
+                weather: {
+                    temp: data.data.current.weather.tp,
+                    humidity: data.data.current.weather.hu,
+                    icon: data.data.current.weather.ic
+                },
+                timestamp: new Date()
+            };
         }
 
-        function renderAQI(aqiData) {
-            const level = getAQILevel(aqiData.aqi);
-            const timeString = aqiData.timestamp.toLocaleString('en-US', {
+        async function fetchISPH() {
+            const response = await fetch(
+                `https://api.airvisual.com/v2/city?city=Ha Dong&state=Hanoi&country=Vietnam&key=${API_KEY}`
+            );
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            if (data.status !== 'success') throw new Error('API error');
+            
+            return {
+                aqi: data.data.current.pollution.aqius,
+                station: 'ISPH',
+                weather: {
+                    temp: data.data.current.weather.tp,
+                    humidity: data.data.current.weather.hu,
+                    icon: data.data.current.weather.ic
+                },
+                timestamp: new Date()
+            };
+        }
+
+        async function fetchAQI() {
+            try {
+                return await fetchLaCasta();
+            } catch (error) {
+                return await fetchISPH();
+            }
+        }
+
+        function render(data) {
+            // Weather
+            document.getElementById('weather-icon').textContent = getWeatherIcon(data.weather.icon);
+            document.getElementById('temp').textContent = `${Math.round(data.weather.temp)}°`;
+            document.getElementById('humidity').textContent = `${data.weather.humidity}% humidity`;
+            
+            // AQI
+            const level = getAQILevel(data.aqi);
+            const aqiColumn = document.getElementById('aqi-column');
+            
+            aqiColumn.classList.remove('aqi-good-bg', 'aqi-moderate-bg', 'aqi-unhealthy-bg', 'aqi-hazardous-bg');
+            aqiColumn.classList.add(level.bgClass);
+            
+            document.getElementById('aqi-emoji').textContent = level.emoji;
+            document.getElementById('aqi').textContent = data.aqi;
+            document.getElementById('aqi-status').textContent = level.status;
+            document.getElementById('aqi-action').textContent = level.action;
+            
+            // Station name and update time
+            document.getElementById('stationName').textContent = data.station;
+            const timeString = data.timestamp.toLocaleString('en-US', {
                 month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true
             });
-            
-            updateWeather(aqiData.weather);
-            
-            const aqiSection = document.getElementById('aqiSection');
-            aqiSection.className = `aqi-section ${level.level}`;
-            aqiSection.innerHTML = `
-                <div class="aqi-left">
-                    <div class="aqi-value">${aqiData.aqi}</div>
-                    <div class="aqi-label">AQI</div>
-                </div>
-                <div class="aqi-right">
-                    <div class="emoji-line">
-                        <div class="emoji">${level.emoji}</div>
-                        <div class="status-title">${level.titleEn}</div>
-                    </div>
-                    <div class="status-title-vi">${level.titleVi}</div>
-                </div>
-            `;
-            
-            document.getElementById('updateTime').textContent = `${timeString} • ${aqiData.station}, ${aqiData.city}`;
+            document.getElementById('updateTime').textContent = timeString;
         }
 
         async function refresh() {
@@ -399,10 +363,9 @@
             updateDateTime();
             
             try {
-                const aqiData = await fetchAQI();
-                renderAQI(aqiData);
+                const data = await fetchAQI();
+                render(data);
             } catch (error) {
-                document.getElementById('updateTime').textContent = 'Error loading data';
                 console.error('Failed:', error);
             }
             
@@ -411,7 +374,6 @@
 
         document.getElementById('refreshBtn').addEventListener('click', refresh);
         updateDateTime();
-        updateQuote();
         refresh();
         setInterval(refresh, 30 * 60 * 1000);
     </script>

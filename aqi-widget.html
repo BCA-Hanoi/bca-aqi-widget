@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balanced Design - Split Background</title>
+    <title>Compact AQI Widget - 400x200</title>
     <style>
         * {
             margin: 0;
@@ -22,22 +22,60 @@
         }
         
         .widget {
-            width: 600px;
-            height: 250px;
-            border-radius: 16px;
+            width: 400px;
+            height: 200px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.15);
             display: grid;
-            grid-template-columns: 220px 1fr;
+            grid-template-columns: 140px 1fr;
             position: relative;
+        }
+        
+        /* Refresh button - Top right corner */
+        .refresh-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            z-index: 10;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.1);
+        }
+        
+        .refresh-btn:active {
+            transform: scale(0.95) rotate(180deg);
+        }
+        
+        .refresh-btn.spinning {
+            animation: spin 0.6s linear;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
         /* Update time - Bottom right corner */
         .update-time {
             position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 9px;
+            bottom: 6px;
+            right: 10px;
+            font-size: 8px;
             color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
             z-index: 10;
@@ -46,48 +84,48 @@
         /* Date Section - Left (White) */
         .date-section {
             background: white;
-            padding: 20px 15px;
+            padding: 15px 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
         
+        .date-weekday {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
         .date-day {
-            font-size: 72px;
+            font-size: 56px;
             font-weight: 900;
             line-height: 1;
             color: #1a1a1a;
         }
         
-        .date-weekday {
-            font-size: 13px;
-            font-weight: 600;
+        .date-info {
+            font-size: 15px;
+            font-weight: 700;
+            margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #999;
-            margin-bottom: 6px;
-        }
-        
-        .date-info {
-            font-size: 20px;
-            font-weight: 700;
-            margin-top: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             color: #666;
         }
         
         .date-year {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 3px;
             color: #999;
         }
         
         /* AQI Section - Right (Colored) */
         .aqi-section {
-            padding: 20px 28px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -97,35 +135,35 @@
         
         .aqi-top {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .aqi-value {
-            font-size: 76px;
+            font-size: 54px;
             font-weight: 900;
             line-height: 1;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            margin-bottom: 4px;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            margin-bottom: 3px;
         }
         
         .aqi-label {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             opacity: 0.9;
         }
         
         .aqi-bottom {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         
         .emoji {
-            font-size: 44px;
+            font-size: 32px;
             line-height: 1;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
             flex-shrink: 0;
         }
         
@@ -134,17 +172,17 @@
         }
         
         .status-title {
-            font-size: 19px;
+            font-size: 14px;
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             line-height: 1.3;
         }
         
         .status-title-vi {
-            font-size: 15px;
+            font-size: 11px;
             font-weight: 600;
             opacity: 0.9;
-            line-height: 1.4;
+            line-height: 1.3;
         }
         
         /* Color themes */
@@ -158,10 +196,10 @@
     <div class="widget">
         <!-- Date on Left (White) -->
         <div class="date-section">
-            <div class="date-weekday">SATURDAY</div>
-            <div class="date-day">18</div>
-            <div class="date-info">JAN</div>
-            <div class="date-year">2026</div>
+            <div class="date-weekday" id="weekday">SATURDAY</div>
+            <div class="date-day" id="day">18</div>
+            <div class="date-info" id="month">JAN</div>
+            <div class="date-year" id="year">2026</div>
         </div>
         
         <!-- AQI on Right (Colored) -->
@@ -174,14 +212,64 @@
             <div class="aqi-bottom">
                 <div class="emoji">😷</div>
                 <div class="status-text">
-                    <div class="status-title">Unhealthy - Masks Required</div>
+                    <div class="status-title">Unhealthy<br>Masks Required</div>
                     <div class="status-title-vi">Không Lành Mạnh<br>Bắt Buộc Khẩu Trang</div>
                 </div>
             </div>
         </div>
         
+        <!-- Refresh button -->
+        <button class="refresh-btn" id="refreshBtn" title="Refresh data">🔄</button>
+        
         <!-- Update time -->
-        <div class="update-time">Updated: Hanoi • Jan 18, 2:30 PM</div>
+        <div class="update-time" id="updateTime">Updated: Hanoi • Jan 18, 2:30 PM</div>
     </div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Update date display
+            const weekdays = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            
+            document.getElementById('weekday').textContent = weekdays[now.getDay()];
+            document.getElementById('day').textContent = now.getDate();
+            document.getElementById('month').textContent = months[now.getMonth()];
+            document.getElementById('year').textContent = now.getFullYear();
+            
+            // Update time display
+            const timeString = now.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            document.getElementById('updateTime').textContent = `Updated: Hanoi • ${timeString}`;
+        }
+        
+        // Refresh button handler
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            const btn = this;
+            btn.classList.add('spinning');
+            
+            // Update date/time
+            updateDateTime();
+            
+            // Here you would also fetch new AQI data
+            // fetchAQI();
+            
+            setTimeout(() => {
+                btn.classList.remove('spinning');
+            }, 600);
+        });
+        
+        // Initialize on load
+        updateDateTime();
+        
+        // Auto-update every minute
+        setInterval(updateDateTime, 60000);
+    </script>
 </body>
 </html>

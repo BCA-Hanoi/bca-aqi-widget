@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BCA Air Quality Widget</title>
+    <title>BCA Air Quality - AirVisual Widget</title>
     <style>
         * {
             margin: 0;
@@ -12,17 +12,24 @@
         }
         
         body {
-            background: transparent;
+            background: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
         }
     </style>
 </head>
 <body>
-    <div name="airvisual_widget" key="696f9aefd8b8ddd927323132"></div>
-    <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+    <div class="container">
+        <div name="airvisual_widget" key="696fa0b28a7f117cbce1bfb1"></div>
+        <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+    </div>
 </body>
 </html>

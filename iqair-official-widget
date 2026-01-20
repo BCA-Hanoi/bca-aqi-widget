@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Air Quality Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div name="airvisual_widget" key="696f9aefd8b8ddd927323132"></div>
+    <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+</body>
+</html>

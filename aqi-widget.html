@@ -18,7 +18,7 @@
         }
         
         .widget {
-            width: 600px;
+            width: 400px;
             height: 180px;
             border-radius: 20px;
             overflow: hidden;
@@ -33,7 +33,7 @@
             background: #3498db;
             padding: 10px 0;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 130px 1fr;
         }
         
         .title-section {
@@ -51,7 +51,7 @@
         
         .content-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 130px 1fr;
             flex: 1;
             position: relative;
         }
@@ -178,7 +178,7 @@
         }
         
         .update-info {
-            font-size: 8px;
+            font-size: 9px;
             color: #95a5a6;
             font-weight: 500;
         }
@@ -196,10 +196,7 @@
                 <div class="title-text">Date</div>
             </div>
             <div class="title-section">
-                <div class="title-text">Weather</div>
-            </div>
-            <div class="title-section">
-                <div class="title-text">Air</div>
+                <div class="title-text">Air / Không Khí</div>
             </div>
         </div>
         
@@ -211,16 +208,6 @@
                 <div class="date-weekday" id="weekday">Saturday</div>
             </div>
             
-            <!-- Weather Column -->
-            <div class="column">
-                <div class="weather-value-row">
-                    <div class="main-value" id="temp">22°</div>
-                    <div class="weather-emoji" id="weather-icon">☀️</div>
-                </div>
-                <div class="sub-value">Hanoi</div>
-                <div class="detail" id="humidity">73% humidity</div>
-            </div>
-            
             <!-- Air Quality Column -->
             <div class="column aqi-column aqi-unhealthy-bg" id="aqi-column">
                 <div class="aqi-value-row">
@@ -228,7 +215,7 @@
                     <div class="aqi-emoji" id="aqi-emoji">😷</div>
                 </div>
                 <div class="sub-value" id="aqi-status">Unhealthy</div>
-                <div class="detail" id="aqi-action">Mask Required</div>
+                <div class="detail" id="aqi-action">Mask Required / Bắt Buộc Khẩu Trang</div>
             </div>
             
             <button class="refresh-btn" id="refreshBtn">🔄</button>
@@ -236,7 +223,7 @@
         
         <div class="update-bar">
             <div class="update-info">
-                <span id="updateTime">Loading...</span> • <span class="station-name" id="stationName">--</span>, Ha Dong
+                Updated <span id="updateTime">Loading...</span> • <span class="station-name" id="stationName">--</span>, Ha Dong
             </div>
         </div>
     </div>
@@ -245,11 +232,11 @@
         const API_KEY = '621c3c6e-26c6-4b4c-af1d-a1727708e16e';
         
         const AQI_LEVELS = [
-            { max: 50, bgClass: 'aqi-good-bg', emoji: '😊', status: 'Good', action: 'Go Outside!' },
-            { max: 100, bgClass: 'aqi-good-bg', emoji: '🙂', status: 'Good', action: 'Enjoy Fresh Air' },
-            { max: 150, bgClass: 'aqi-moderate-bg', emoji: '😐', status: 'Moderate', action: 'Suggested Mask' },
-            { max: 200, bgClass: 'aqi-unhealthy-bg', emoji: '😷', status: 'Unhealthy', action: 'Mask Required' },
-            { max: 999, bgClass: 'aqi-hazardous-bg', emoji: '🚫', status: 'Hazardous', action: 'Stay Inside' }
+            { max: 50, bgClass: 'aqi-good-bg', emoji: '😊', status: 'Good', action: 'Go Outside!', actionVi: 'Ra Ngoài!' },
+            { max: 100, bgClass: 'aqi-good-bg', emoji: '🙂', status: 'Good', action: 'Enjoy Fresh Air', actionVi: 'Không Khí Tốt' },
+            { max: 150, bgClass: 'aqi-moderate-bg', emoji: '😐', status: 'Moderate', action: 'Suggested Mask', actionVi: 'Nên Đeo Khẩu Trang' },
+            { max: 200, bgClass: 'aqi-unhealthy-bg', emoji: '😷', status: 'Unhealthy', action: 'Mask Required', actionVi: 'Bắt Buộc Khẩu Trang' },
+            { max: 999, bgClass: 'aqi-hazardous-bg', emoji: '🚫', status: 'Hazardous', action: 'Stay Inside', actionVi: 'Ở Trong Nhà' }
         ];
         
         function getAQILevel(aqi) {
@@ -285,11 +272,15 @@
 
         async function fetchLaCasta() {
             const response = await fetch(
-                `https://api.airvisual.com/v2/nearest_city?lat=20.9766&lon=105.7649&key=${API_KEY}`
+                `https://api.airvisual.com/v2/nearest_city?lat=20.9819&lon=105.8247&key=${API_KEY}`
             );
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
             if (data.status !== 'success') throw new Error('API error');
+            
+            console.log('Nearest station to La Casta:', data.data);
+            console.log('Station:', data.data.city);
+            console.log('AQI:', data.data.current.pollution.aqius);
             
             return {
                 aqi: data.data.current.pollution.aqius,
@@ -347,7 +338,7 @@
             document.getElementById('aqi-emoji').textContent = level.emoji;
             document.getElementById('aqi').textContent = data.aqi;
             document.getElementById('aqi-status').textContent = level.status;
-            document.getElementById('aqi-action').textContent = level.action;
+            document.getElementById('aqi-action').textContent = `${level.action} / ${level.actionVi}`;
             
             // Station name and update time
             document.getElementById('stationName').textContent = data.station;

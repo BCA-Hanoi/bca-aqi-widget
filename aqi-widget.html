@@ -323,11 +323,6 @@
         }
 
         function render(data) {
-            // Weather
-            document.getElementById('weather-icon').textContent = getWeatherIcon(data.weather.icon);
-            document.getElementById('temp').textContent = `${Math.round(data.weather.temp)}°`;
-            document.getElementById('humidity').textContent = `${data.weather.humidity}% humidity`;
-            
             // AQI
             const level = getAQILevel(data.aqi);
             const aqiColumn = document.getElementById('aqi-column');
@@ -338,7 +333,7 @@
             document.getElementById('aqi-emoji').textContent = level.emoji;
             document.getElementById('aqi').textContent = data.aqi;
             document.getElementById('aqi-status').textContent = level.status;
-            document.getElementById('aqi-action').textContent = `${level.action} / ${level.actionVi}`;
+            document.getElementById('aqi-action').textContent = level.action;
             
             // Station name and update time
             document.getElementById('stationName').textContent = data.station;

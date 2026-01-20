@@ -270,7 +270,32 @@
             return icons[iconCode] || '🌤️';
         }
 
+        async function fetchHaDong() {
+            console.log('=== TRYING HA DONG STATION ===');
+            const response = await fetch(
+                `https://api.airvisual.com/v2/city?city=Ha Dong&state=Hanoi&country=Vietnam&key=${API_KEY}`
+            );
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            if (data.status !== 'success') throw new Error('API error');
+            
+            console.log('Ha Dong API Response:', JSON.stringify(data, null, 2));
+            console.log('AQI:', data.data.current.pollution.aqius);
+            
+            return {
+                aqi: data.data.current.pollution.aqius,
+                station: 'Ha Dong',
+                weather: {
+                    temp: data.data.current.weather.tp,
+                    humidity: data.data.current.weather.hu,
+                    icon: data.data.current.weather.ic
+                },
+                timestamp: new Date()
+            };
+        }
+
         async function fetchLaCasta() {
+            console.log('=== TRYING GPS-BASED (NEAREST STATION) ===');
             const response = await fetch(
                 `https://api.airvisual.com/v2/nearest_city?lat=20.9819&lon=105.8247&key=${API_KEY}`
             );
@@ -278,13 +303,19 @@
             const data = await response.json();
             if (data.status !== 'success') throw new Error('API error');
             
-            console.log('Nearest station to La Casta:', data.data);
-            console.log('Station:', data.data.city);
+            console.log('=== FULL API RESPONSE ===');
+            console.log(JSON.stringify(data, null, 2));
+            console.log('=== STATION INFO ===');
+            console.log('City:', data.data.city);
+            console.log('State:', data.data.state);
+            console.log('Country:', data.data.country);
+            console.log('Location:', data.data.location);
+            console.log('Coordinates:', data.data.location?.coordinates);
             console.log('AQI:', data.data.current.pollution.aqius);
             
             return {
                 aqi: data.data.current.pollution.aqius,
-                station: 'La Casta',
+                station: data.data.city,
                 weather: {
                     temp: data.data.current.weather.tp,
                     humidity: data.data.current.weather.hu,
@@ -316,9 +347,16 @@
 
         async function fetchAQI() {
             try {
-                return await fetchLaCasta();
+                console.log('Attempting Ha Dong station first...');
+                return await fetchHaDong();
             } catch (error) {
-                return await fetchISPH();
+                console.log('Ha Dong failed, trying GPS-based nearest station...');
+                try {
+                    return await fetchLaCasta();
+                } catch (error2) {
+                    console.error('All methods failed:', error, error2);
+                    throw error2;
+                }
             }
         }
 
